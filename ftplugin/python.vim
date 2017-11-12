@@ -33,32 +33,32 @@ let b:next_end='\v\S\n*(%$\|^\s*(class\|def\|async def)\|^\S)'
 let b:prev_end='\v\S\n*(^\s*(class\|def\|async def)\|^\S)'
 
 " new: changed left-hand-sides into global <SID> mappings
-execute "nnoremap <silent> <SID>(]]) :call <SID>Python_jump('n', '". b:next_toplevel."', 'W')<cr>"
-execute "nnoremap <silent> <SID>([[) :call <SID>Python_jump('n', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "nnoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "nnoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "nnoremap <silent> <SID>(]m) :call <SID>Python_jump('n', '". b:next."', 'W')<cr>"
-execute "nnoremap <silent> <SID>([m) :call <SID>Python_jump('n', '". b:prev."', 'Wb')<cr>"
-execute "nnoremap <silent> <SID>(]M) :call <SID>Python_jump('n', '". b:next_end."', 'W', 0)<cr>"
-execute "nnoremap <silent> <SID>([M) :call <SID>Python_jump('n', '". b:prev_end."', 'Wb', 0)<cr>"
+execute "nnoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('n', '". b:next_toplevel."', 'W')<cr>"
+execute "nnoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('n', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "nnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "nnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "nnoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('n', '". b:next."', 'W')<cr>"
+execute "nnoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('n', '". b:prev."', 'Wb')<cr>"
+execute "nnoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('n', '". b:next_end."', 'W', 0)<cr>"
+execute "nnoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('n', '". b:prev_end."', 'Wb', 0)<cr>"
 
-execute "onoremap <silent> <SID>(]]) :call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
-execute "onoremap <silent> <SID>([[) :call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "onoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "onoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "onoremap <silent> <SID>(]m) :call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
-execute "onoremap <silent> <SID>([m) :call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
-execute "onoremap <silent> <SID>(]M) :call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
-execute "onoremap <silent> <SID>([M) :call <SID>Python_jump('o', '". b:prev_end."', 'Wb', 0)<cr>"
+execute "onoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
+execute "onoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "onoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "onoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "onoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
+execute "onoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
+execute "onoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
+execute "onoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('o', '". b:prev_end."', 'Wb', 0)<cr>"
 
-execute "xnoremap <silent> <SID>(]]) :call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
-execute "xnoremap <silent> <SID>([[) :call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "xnoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "xnoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "xnoremap <silent> <SID>(]m) :call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
-execute "xnoremap <silent> <SID>([m) :call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
-execute "xnoremap <silent> <SID>(]M) :call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
-execute "xnoremap <silent> <SID>([M) :call <SID>Python_jump('x', '". b:prev_end."', 'Wb', 0)<cr>"
+execute "xnoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
+execute "xnoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "xnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "xnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "xnoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
+execute "xnoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
+execute "xnoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
+execute "xnoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('x', '". b:prev_end."', 'Wb', 0)<cr>"
 
 " added these interface <Plug> mappings:
 map <buffer> <Plug>]]-motion <SID>(]])
@@ -82,7 +82,7 @@ if !exists("g:no_bracket_maps") || !g:no_bracket_maps
     map <buffer> [M <Plug>[M-motion|sunmap <buffer> [M
 
     " b:undo_ftplugin was missing at all:
-    let b:undo_ftplugin = (exists('b:undo_ftplugin') ? '|' : '').
+    let b:undo_ftplugin = (exists('b:undo_ftplugin') ? b:undo_ftplugin.'|' : '').
 	\ 'unmap <buffer> ]]|unmap <buffer> [[|unmap <buffer> ][|unmap <buffer> []|unmap <buffer> ]m|unmap <buffer> [m|unmap <buffer> ]M|unmap <buffer> [M'
 endif
 
