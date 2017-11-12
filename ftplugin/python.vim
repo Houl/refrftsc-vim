@@ -32,36 +32,65 @@ let b:prev='\v^\s*(class\|def\|async def)>'
 let b:next_end='\v\S\n*(%$\|^\s*(class\|def\|async def)\|^\S)'
 let b:prev_end='\v\S\n*(^\s*(class\|def\|async def)\|^\S)'
 
-execute "nnoremap <silent> <buffer> ]] :call <SID>Python_jump('n', '". b:next_toplevel."', 'W')<cr>"
-execute "nnoremap <silent> <buffer> [[ :call <SID>Python_jump('n', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "nnoremap <silent> <buffer> ][ :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "nnoremap <silent> <buffer> [] :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "nnoremap <silent> <buffer> ]m :call <SID>Python_jump('n', '". b:next."', 'W')<cr>"
-execute "nnoremap <silent> <buffer> [m :call <SID>Python_jump('n', '". b:prev."', 'Wb')<cr>"
-execute "nnoremap <silent> <buffer> ]M :call <SID>Python_jump('n', '". b:next_end."', 'W', 0)<cr>"
-execute "nnoremap <silent> <buffer> [M :call <SID>Python_jump('n', '". b:prev_end."', 'Wb', 0)<cr>"
+" new: changed left-hand-sides into global <SID> mappings
+execute "nnoremap <silent> <SID>(]]) :call <SID>Python_jump('n', '". b:next_toplevel."', 'W')<cr>"
+execute "nnoremap <silent> <SID>([[) :call <SID>Python_jump('n', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "nnoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "nnoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "nnoremap <silent> <SID>(]m) :call <SID>Python_jump('n', '". b:next."', 'W')<cr>"
+execute "nnoremap <silent> <SID>([m) :call <SID>Python_jump('n', '". b:prev."', 'Wb')<cr>"
+execute "nnoremap <silent> <SID>(]M) :call <SID>Python_jump('n', '". b:next_end."', 'W', 0)<cr>"
+execute "nnoremap <silent> <SID>([M) :call <SID>Python_jump('n', '". b:prev_end."', 'Wb', 0)<cr>"
 
-execute "onoremap <silent> <buffer> ]] :call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
-execute "onoremap <silent> <buffer> [[ :call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "onoremap <silent> <buffer> ][ :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "onoremap <silent> <buffer> [] :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "onoremap <silent> <buffer> ]m :call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
-execute "onoremap <silent> <buffer> [m :call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
-execute "onoremap <silent> <buffer> ]M :call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
-execute "onoremap <silent> <buffer> [M :call <SID>Python_jump('o', '". b:prev_end."', 'Wb', 0)<cr>"
+execute "onoremap <silent> <SID>(]]) :call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
+execute "onoremap <silent> <SID>([[) :call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "onoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "onoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "onoremap <silent> <SID>(]m) :call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
+execute "onoremap <silent> <SID>([m) :call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
+execute "onoremap <silent> <SID>(]M) :call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
+execute "onoremap <silent> <SID>([M) :call <SID>Python_jump('o', '". b:prev_end."', 'Wb', 0)<cr>"
 
-execute "xnoremap <silent> <buffer> ]] :call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
-execute "xnoremap <silent> <buffer> [[ :call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "xnoremap <silent> <buffer> ][ :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "xnoremap <silent> <buffer> [] :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "xnoremap <silent> <buffer> ]m :call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
-execute "xnoremap <silent> <buffer> [m :call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
-execute "xnoremap <silent> <buffer> ]M :call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
-execute "xnoremap <silent> <buffer> [M :call <SID>Python_jump('x', '". b:prev_end."', 'Wb', 0)<cr>"
+execute "xnoremap <silent> <SID>(]]) :call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
+execute "xnoremap <silent> <SID>([[) :call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
+execute "xnoremap <silent> <SID>(][) :call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "xnoremap <silent> <SID>([]) :call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "xnoremap <silent> <SID>(]m) :call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
+execute "xnoremap <silent> <SID>([m) :call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
+execute "xnoremap <silent> <SID>(]M) :call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
+execute "xnoremap <silent> <SID>([M) :call <SID>Python_jump('x', '". b:prev_end."', 'Wb', 0)<cr>"
+
+" added these interface <Plug> mappings:
+map <buffer> <Plug>]]-motion <SID>(]])
+map <buffer> <Plug>[[-motion <SID>([[)
+map <buffer> <Plug>][-motion <SID>(][)
+map <buffer> <Plug>[]-motion <SID>([])
+map <buffer> <Plug>]m-motion <SID>(]m)
+map <buffer> <Plug>[m-motion <SID>([m)
+map <buffer> <Plug>]M-motion <SID>(]M)
+map <buffer> <Plug>[M-motion <SID>([M)
+
+" added new conventional variable to still have default mappings:
+if !exists("g:no_bracket_maps") || !g:no_bracket_maps
+    map <buffer> ]] <Plug>]]-motion|sunmap <buffer> ]]
+    map <buffer> [[ <Plug>[[-motion|sunmap <buffer> [[
+    map <buffer> ][ <Plug>][-motion|sunmap <buffer> ][
+    map <buffer> [] <Plug>[]-motion|sunmap <buffer> []
+    map <buffer> ]m <Plug>]m-motion|sunmap <buffer> ]m
+    map <buffer> [m <Plug>[m-motion|sunmap <buffer> [m
+    map <buffer> ]M <Plug>]M-motion|sunmap <buffer> ]M
+    map <buffer> [M <Plug>[M-motion|sunmap <buffer> [M
+
+    " b:undo_ftplugin was missing at all:
+    let b:undo_ftplugin = (exists('b:undo_ftplugin') ? '|' : '').
+	\ 'unmap <buffer> ]]|unmap <buffer> [[|unmap <buffer> ][|unmap <buffer> []|unmap <buffer> ]m|unmap <buffer> [m|unmap <buffer> ]M|unmap <buffer> [M'
+endif
 
 if !exists('*<SID>Python_jump')
   fun! <SID>Python_jump(mode, motion, flags, ...) range
       let l:startofline = (a:0 >= 1) ? a:1 : 1
+      let cnt = v:count1
+      " put count check before first :normal
 
       if a:mode == 'x'
           normal! gv
@@ -71,7 +100,6 @@ if !exists('*<SID>Python_jump')
           normal! 0
       endif
 
-      let cnt = v:count1
       mark '
       while cnt > 0
           call search(a:motion, a:flags)
