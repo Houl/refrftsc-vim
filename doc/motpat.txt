@@ -1,0 +1,217 @@
+*nwolib.txt*
+
+==============================================================================
+INTRO
+
+						*motpat*
+Create motion mappings defined by a pattern:
+	|motpat#Map()|
+
+						*gvmap-nwo*
+Avoid redundancy in mapping definitions.  Two functions are important:
+	|nwo#gvmap#mode()|
+	|nwo#gvmap#vrestore()|
+
+==============================================================================
+FUNCTIONS
+
+autoload/motpat.vim ~
+
+						*motpat#Map()*
+
+motpat#Map({buf-local}, {lhs-backward}, {lhs-forward}, {rhs-pat}[, {flags}])
+
+	return a :map command to map a backward and a forward motion in
+	Normal, Visual and Operator-pending mode (but not Select mode).
+	Can be used when both directions share the same pattern.
+
+	{buf-local}	(boolean) if non-zero, create buffer-local mappings,
+			else global mappings
+
+	{lhs-backward}	(string) backward search key (not mapped if empty)
+
+	{lhs-forward}	(string) forward search key (not mapped if empty)
+
+	{rhs-pat}	(string) pattern to define the motion
+
+	{flags}		(string) flags:
+			* type of motion, one of "e" (default), "i" or "l"
+			  (exclusive, inclusive or linewise);
+			* "=": always evaluate {rhs-pat} as an expression to
+			  obtain a pattern string
+	
+	Example with expression argument: >
+		:let b:todo_pattern = 'TODO\|XXX'
+		:exec motpat#Map(1, '(', ')', 'b:todo_pattern', '=')
+<
+
+						*motpat#Fmap()*
+motpat#Fmap({buf-local}, {lhs-forward}, {rhs-pat}[, {flags}])
+
+	like |motpat#Map()|, but only for the forward direction.
+
+						*motpat#Bmap()*
+motpat#Bmap({buf-local}, {lhs-backward}, {rhs-pat}[, {flags}])
+
+	like |motpat#Map()|, but only for the backward direction.
+
+------------------------------------------------------------------------------
+autoload/nwo/gvmap.vim ~
+
+						*nwo#gvmap#mode()*
+nwo#gvmap#mode()
+
+	remember the current Vim mode and return ":".
+	Intended usage: >
+		noremap <expr> <SID>: nwo#gvmap#mode()
+<
+	In your mappings, you can then use `<SID>:` in place of `:`.
+	To benefit from the remembered mode, you should invoke
+	|nwo#gvmap#vrestore()| from the Ex-command that is executed by your
+	mapping.
+
+nwo#gvmap#mode({il})
+
+	an optional {il} argument makes a difference in Operator pending mode:
+	{il}	(string) if {il} is "i", return "v:".
+		         if {il} is "l", return "V:".
+	Other arguments are invalid.
+
+	Rationale: When your Ex-command defines a motion, then this motion
+	is |exclusive| per default.  With given {il}, you can make it
+	|inclusive| or |linewise|.
+
+	Problem: such a motion modification can only be given once.  The user
+	cannot further override it using |o_v| or |o_V|.
+
+						*nwo#gvmap#vrestore()*
+nwo#gvmap#vrestore()
+
+	check for a remembered mode, and in case it was Visual mode, do >
+		:normal! gv
+
+<	Together with |nwo#gvmap#mode()|, you can create single mappings which
+	work transparently in Normal, Operator-pending and Visual mode, see
+	|gvmap-example-nwo|.
+
+						*nwo#gvmap#bmode()*
+nwo#gvmap#bmode(...)
+
+	"bang mode" = Insert/Cmdline mode
+
+						*nwo#gvmap#count()*
+nwo#gvmap#count()
+
+	get the count ("" if v:count was zero).  Not recommended, use only
+	when v:count gets lost before it's needed.
+
+						*nwo#gvmap#finish()*
+nwo#gvmap#finish()
+
+	reset the remembered mode.  One of nwo#gvmap#finish() or
+	|nwo#gvmap#vrestore()| should be called to reset state.
+
+------------------------------------------------------------------------------
+autoload/nwo/var.vim
+
+nwo#var#BG({varname}[, {default-value}])
+
+nwo#var#WG({varname}[, {default-value}])
+
+nwo#var#WB({varname}[, {default-value}])
+
+nwo#var#WBG({varname}[, {default-value}])
+
+nwo#var#TG({varname}[, {default-value}])
+
+
+Ok, this is duplicated functionality.  Every stupid library has this.
+tlib ...
+
+==============================================================================
+CUSTOMIZATION
+
+------------------------------------------------------------------------------
+motpat ~
+
+						*g:motpat_silent*
+g:motpat_silent		boolean (default 1 iff 'shortmess' contains "s")
+
+	if non-zero, turn off the message if pattern not found.
+
+		*w:motpat_foldopen* *b:motpat_foldopen* *g:motpat_foldopen*
+g:motpat_foldopen	boolean (default 1 iff 'foldopen' contains "block")
+
+	whether or not to open folds at a jump target.
+	
+						*g:motpat_errmsg*
+g:motpat_errmsg		string (default '')
+	
+	contains the last motpat error message (written only).
+
+------------------------------------------------------------------------------
+gvmap ~
+						*g:nwovar_define_missing*
+g:nwovar_define_missing		boolean (default 0)
+
+	If non-zero, define a missing variable in the most general scope,
+	using the default value.
+
+==============================================================================
+EXAMPLES
+
+gvmap ~
+						*gvmap-example-nwo*
+Your Script: >
+
+	" define and use '<SID>:' in place of ':' (to enter Cmdline mode)
+	noremap <expr> <SID>: nwo#gvmap#mode()
+
+	" some mapping:
+	noremap <script> <F8> <SID>:<C-U>call MyFunc()<CR>
+
+	func! MyFunc()
+	    " calling this earlier is usually better:
+	    call nwo#gvmap#vrestore()
+	    ... do work ...
+	endfunc
+
+==============================================================================
+
+TODO
+
+gvmap ~
+(old Vims) gvmap#count(): Vim bug?  A count for an <expr> map is not cleared
+  for the next <expr> map
+
+motpat ~
+- convert '^@' to '\n' or '^V^@' ?
+- mixed language of error messages
+
+==============================================================================
+HISTORY
+
+gvmap ~
+2017 Nov 10	started this help!
+2011 May 31	s:lastmode is returned just in case it will be needed a little
+		longer
+2010 Mar 28	gvmode#mode_no() merged into gvmap#mode()
+2009 Nov 20	mode(1) was added in Vim7.2; try-block removed
+
+motpat ~
+2017 Jul 21	refact
+2017 Jul 12	added g:motpat_errmsg
+2017 Feb 11	BF: now use safer `copy(l:)',
+       		missing `copy()' crashes Vim 7.2 (and older)
+2016 Nov 24	make `:FiltRedir map motpat' find motpat mappings
+2016 Nov 03	with g:foldopen==0: visit at most one match per closed fold
+2016 Sep 07	added '=' to evaluate expression for the pattern
+2016 Jan 21	(!) mapping functions now *return* the map command(s)
+2011 Apr 07	now uses autoload/nwo/gvmap.vim
+2010 Sep 07	added g:motpat_foldopen
+2010 Sep 01	g:motpat_silent default syncs with 'shm'
+2010 Aug 24	allow all control characters in a pattern
+2010 Apr 29	(!) changed order of motpat#Map() args (lhsforw, lhsback)
+2010 Mar 28	nwo#gvmap#mode_no() dropped
+2009 Dec 11	added g:motpat_silent
+
