@@ -44,8 +44,8 @@ execute "nnoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('n', '". b:prev
 
 execute "onoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
 execute "onoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "onoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "onoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "onoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('o', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "onoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('o', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
 execute "onoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
 execute "onoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
 execute "onoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
@@ -53,8 +53,8 @@ execute "onoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('o', '". b:prev
 
 execute "xnoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
 execute "xnoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "xnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "xnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
+execute "xnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('x', '". b:next_endtoplevel."', 'W', 0)<cr>"
+execute "xnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('x', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
 execute "xnoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
 execute "xnoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
 execute "xnoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
