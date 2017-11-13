@@ -38,8 +38,7 @@ map <buffer> <Plug>[m-motion <SID>([m)
 map <buffer> <Plug>]M-motion <SID>(]M)
 map <buffer> <Plug>[M-motion <SID>([M)
 
-" added new conventional variable to still have default mappings:
-if !exists("g:no_bracket_maps") || !g:no_bracket_maps
+if (!exists("g:no_plugin_maps") || !g:no_plugin_maps) && (!exists("g:no_python_maps") || !g:no_python_maps)
     map <buffer> ]] <Plug>]]-motion|sunmap <buffer> ]]
     map <buffer> [[ <Plug>[[-motion|sunmap <buffer> [[
     map <buffer> ][ <Plug>][-motion|sunmap <buffer> ][
