@@ -23,42 +23,10 @@ setlocal omnifunc=pythoncomplete#Complete
 
 set wildignore+=*.pyc
 
-let b:next_toplevel='\v%$\|^(class\|def\|async def)>'
-let b:prev_toplevel='\v^(class\|def\|async def)>'
-let b:next_endtoplevel='\v%$\|\S.*\n+(def\|class)'
-let b:prev_endtoplevel='\v\S.*\n+(def\|class)'
-let b:next='\v%$\|^\s*(class\|def\|async def)>'
-let b:prev='\v^\s*(class\|def\|async def)>'
-let b:next_end='\v\S\n*(%$\|^\s*(class\|def\|async def)\|^\S)'
-let b:prev_end='\v\S\n*(^\s*(class\|def\|async def)\|^\S)'
-
-" new: changed left-hand-sides into global <SID> mappings
-execute "nnoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('n', '". b:next_toplevel."', 'W')<cr>"
-execute "nnoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('n', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "nnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('n', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "nnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('n', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "nnoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('n', '". b:next."', 'W')<cr>"
-execute "nnoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('n', '". b:prev."', 'Wb')<cr>"
-execute "nnoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('n', '". b:next_end."', 'W', 0)<cr>"
-execute "nnoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('n', '". b:prev_end."', 'Wb', 0)<cr>"
-
-execute "onoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('o', '". b:next_toplevel."', 'W')<cr>"
-execute "onoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('o', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "onoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('o', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "onoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('o', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "onoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('o', '". b:next."', 'W')<cr>"
-execute "onoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('o', '". b:prev."', 'Wb')<cr>"
-execute "onoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('o', '". b:next_end."', 'W', 0)<cr>"
-execute "onoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('o', '". b:prev_end."', 'Wb', 0)<cr>"
-
-execute "xnoremap <silent> <SID>(]]) :<C-U>call <SID>Python_jump('x', '". b:next_toplevel."', 'W')<cr>"
-execute "xnoremap <silent> <SID>([[) :<C-U>call <SID>Python_jump('x', '". b:prev_toplevel."', 'Wb')<cr>"
-execute "xnoremap <silent> <SID>(][) :<C-U>call <SID>Python_jump('x', '". b:next_endtoplevel."', 'W', 0)<cr>"
-execute "xnoremap <silent> <SID>([]) :<C-U>call <SID>Python_jump('x', '". b:prev_endtoplevel."', 'Wb', 0)<cr>"
-execute "xnoremap <silent> <SID>(]m) :<C-U>call <SID>Python_jump('x', '". b:next."', 'W')<cr>"
-execute "xnoremap <silent> <SID>([m) :<C-U>call <SID>Python_jump('x', '". b:prev."', 'Wb')<cr>"
-execute "xnoremap <silent> <SID>(]M) :<C-U>call <SID>Python_jump('x', '". b:next_end."', 'W', 0)<cr>"
-execute "xnoremap <silent> <SID>([M) :<C-U>call <SID>Python_jump('x', '". b:prev_end."', 'Wb', 0)<cr>"
+exec motpat#Map(1, '<SID>([[)', '<SID>(]])', '^\%(class\|def\|async def\)\>\|\%$')
+exec motpat#Map(1, '<SID>([])', '<SID>(][)', '^.*\n\%(class\|def\|async def\)\>\|\%$', 'l')
+exec motpat#Map(1, '<SID>([m)', '<SID>(]m)', '^\s*\%(class\|def\|async def\)\>\|\%$')
+exec motpat#Map(1, '<SID>([M)', '<SID>(]M)', '\%(^.*\n\s*\%(class\|def\|async def\)\>\|^\S\|\%$\)', 'l')
 
 " added these interface <Plug> mappings:
 map <buffer> <Plug>]]-motion <SID>(]])
@@ -86,31 +54,6 @@ if !exists("g:no_bracket_maps") || !g:no_bracket_maps
 	\ 'unmap <buffer> ]]|unmap <buffer> [[|unmap <buffer> ][|unmap <buffer> []|unmap <buffer> ]m|unmap <buffer> [m|unmap <buffer> ]M|unmap <buffer> [M'
 endif
 
-if !exists('*<SID>Python_jump')
-  fun! <SID>Python_jump(mode, motion, flags, ...) range
-      let l:startofline = (a:0 >= 1) ? a:1 : 1
-      let cnt = v:count1
-      " put count check before first :normal
-
-      if a:mode == 'x'
-          normal! gv
-      endif
-
-      if l:startofline == 1
-          normal! 0
-      endif
-
-      mark '
-      while cnt > 0
-          call search(a:motion, a:flags)
-          let cnt = cnt - 1
-      endwhile
-
-      if l:startofline == 1
-          normal! ^
-      endif
-  endfun
-endif
 
 if has("browsefilter") && !exists("b:browsefilter")
     let b:browsefilter = "Python Files (*.py)\t*.py\n" .
